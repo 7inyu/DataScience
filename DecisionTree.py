@@ -152,17 +152,9 @@ def ID3(dataset, Attributes):
 
     small_set, big_set = divData(dataset, best_a, best_j)
 
-    s_attr = []
-    for i in Attributes:
-        if i != best_a:
-            s_attr.append(i)
-    tree[best_a+1]['<='+str(best_j)] = ID3(small_set, s_attr)
-
-    b_attr = []
-    for i in Attributes:
-        if i != best_a:
-            b_attr.append(i)
-    tree[best_a+1]['>'+str(best_j)] = ID3(big_set, b_attr)
+    new_attr = [i for i in Attribues if i != best_a]
+    tree[best_a+1]['<='+str(best_j)] = ID3(small_set, new_attr)
+    tree[best_a+1]['>'+str(best_j)] = ID3(big_set, new_attr)
 
     return tree
 
