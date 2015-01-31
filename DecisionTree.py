@@ -1,6 +1,7 @@
 __author__ = 'Qinyu'
 
 from math import log
+import pprint
 
 # Attributes set
 Attributes = [i for i in range(9)]
@@ -165,6 +166,55 @@ def ID3(dataset, Attributes):
 
     return tree
 
-print ID3(train_set, Attributes)
+
+# return depth of a tree
+def depth(tree):
+    d = 1
+    root = tree.keys()[0]
+    children = []
+    for key in tree[root]:
+        if tree[root][key] != 'M' and tree[root][key] != 'B':
+            children.append(key)
+    if len(children) != 0:
+        d = d + max([depth(tree[root][key]) for key in children])
+    else:
+        return 2
+
+    return d
+
+
+def numOfNodes(tree):
+    n = 1
+    root = tree.keys()[0]
+    children = []
+    for key in tree[root]:
+        if tree[root][key] == 'M' or tree[root][key] == 'B':
+            n += 1
+        else:
+            children.append(key)
+    if len(children) != 0:
+        n = n + sum([numOfNodes(tree[root][key]) for key in children])
+
+    return n
+
+
+def numOfLeaf(tree):
+    l = 0
+    root = tree.keys()[0]
+    children = []
+    for key in tree[root]:
+        if tree[root][key] == 'M' or tree[root][key] == 'B':
+            l += 1
+        else:
+            children.append(key)
+    if len(children) != 0:
+        l = l + sum([numOfLeaf(tree[root][key]) for key in children])
+
+    return l
+
+
+printer = pprint.PrettyPrinter()
+
+printer.pprint(ID3(train_set, Attributes))
 
 
